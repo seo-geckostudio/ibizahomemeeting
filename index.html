@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gecko Studio - Demos IA para Ibiza Home Meeting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .demo-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .demo-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .demo-card .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .status.development {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+
+        .status.ready {
+            background: #55efc4;
+            color: #00b894;
+        }
+
+        .demo-card .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .demo-card .btn:hover {
+            background: #764ba2;
+        }
+
+        .demo-card .btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gecko Studio - Demos IA</h1>
+            <p>Aplicaciones con Inteligencia Artificial para el Ibiza Home Meeting</p>
+        </header>
+
+        <div class="demos-grid">
+            <div class="demo-card">
+                <div class="icon">🏗️</div>
+                <h2>Visualización Arquitectónica</h2>
+                <p>Sube fotos o planos y genera renders 3D realistas al instante. Propuestas de diseño en diferentes estilos con IA.</p>
+                <span class="status development">🚧 En desarrollo</span>
+                <br>
+                <a href="./visualizacion-arquitectonica/index.html" class="btn disabled">Ver Demo</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="icon">🤝</div>
+                <h2>Networking Inteligente</h2>
+                <p>Match automático de oportunidades entre asistentes. Conecta con arquitectos, constructores y proveedores complementarios.</p>
+                <span class="status development">🚧 En desarrollo</span>
+                <br>
+                <a href="./networking-inteligente/index.html" class="btn disabled">Ver Demo</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="icon">💰</div>
+                <h2>Calculadora de Presupuestos</h2>
+                <p>Estimación inteligente de costes, materiales y tiempos. A partir de descripción o imágenes del proyecto.</p>
+                <span class="status development">🚧 En desarrollo</span>
+                <br>
+                <a href="./calculadora-presupuestos/index.html" class="btn disabled">Ver Demo</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="icon">📋</div>
+                <h2>Chatbot Normativa Ibiza</h2>
+                <p>Consultas sobre regulaciones de construcción en Ibiza, PTI y certificaciones sostenibles en tiempo real.</p>
+                <span class="status development">🚧 En desarrollo</span>
+                <br>
+                <a href="./chatbot-normativa/index.html" class="btn disabled">Ver Demo</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="icon">📄</div>
+                <h2>Generador de Propuestas</h2>
+                <p>Crea presentaciones y propuestas comerciales personalizadas en minutos. Optimizado para cierre rápido en ferias.</p>
+                <span class="status development">🚧 En desarrollo</span>
+                <br>
+                <a href="./generador-propuestas/index.html" class="btn disabled">Ver Demo</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Desarrollado por <strong>Gecko Studio</strong> para el Ibiza Home Meeting</p>
+            <p><a href="https://github.com/seo-geckostudio/ibizahomemeeting" target="_blank">Ver en GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
