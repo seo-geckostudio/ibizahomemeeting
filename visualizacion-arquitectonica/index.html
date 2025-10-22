@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización Arquitectónica IA - Gecko Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ Visualización Arquitectónica con IA</h1>
+            <p>Transforma espacios y planos en renders realistas al instante</p>
+            <a href="../index.html" class="back-btn">← Volver al inicio</a>
+        </header>
+
+        <!-- Paso 1: Subir imagen -->
+        <section id="upload-section" class="section active">
+            <h2>Sube tu imagen o elige un ejemplo</h2>
+
+            <div class="upload-area" id="upload-area">
+                <div class="upload-icon">📤</div>
+                <p class="upload-text">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                <p class="upload-hint">Formatos: JPG, PNG (máx. 10MB)</p>
+                <input type="file" id="file-input" accept="image/*" hidden>
+            </div>
+
+            <div class="preview-container" id="preview-container" style="display: none;">
+                <img id="preview-image" alt="Vista previa">
+                <button onclick="clearImage()" class="btn-clear">✕ Cambiar imagen</button>
+            </div>
+
+            <div class="divider">
+                <span>O prueba con un ejemplo</span>
+            </div>
+
+            <div class="examples-grid">
+                <div class="example-card" onclick="selectExample('salon-vacio')">
+                    <img src="assets/examples/salon-vacio.jpg" alt="Salón vacío" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3ESalón vacío%3C/text%3E%3C/svg%3E'">
+                    <p>Salón vacío</p>
+                </div>
+                <div class="example-card" onclick="selectExample('terraza')">
+                    <img src="assets/examples/terraza.jpg" alt="Terraza" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3ETerraza%3C/text%3E%3C/svg%3E'">
+                    <p>Terraza</p>
+                </div>
+                <div class="example-card" onclick="selectExample('cocina')">
+                    <img src="assets/examples/cocina.jpg" alt="Cocina" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3ECocina%3C/text%3E%3C/svg%3E'">
+                    <p>Cocina</p>
+                </div>
+                <div class="example-card" onclick="selectExample('plano')">
+                    <img src="assets/examples/plano.jpg" alt="Plano arquitectónico" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3EPlano%3C/text%3E%3C/svg%3E'">
+                    <p>Plano arquitectónico</p>
+                </div>
+            </div>
+
+            <button onclick="nextToStyles()" class="btn btn-primary" id="btn-next-styles" disabled>
+                Continuar con estilos →
+            </button>
+        </section>
+
+        <!-- Paso 2: Seleccionar estilo -->
+        <section id="style-section" class="section">
+            <h2>Selecciona el estilo de diseño</h2>
+            <p class="subtitle">Elige cómo quieres visualizar el espacio</p>
+
+            <div class="styles-grid">
+                <div class="style-card" data-style="moderno">
+                    <div class="style-icon">🏢</div>
+                    <h3>Moderno Minimalista</h3>
+                    <p>Líneas limpias, espacios abiertos, tonos neutros</p>
+                </div>
+
+                <div class="style-card" data-style="mediterraneo">
+                    <div class="style-icon">🌊</div>
+                    <h3>Mediterráneo</h3>
+                    <p>Blanco, azul, materiales naturales, luz natural</p>
+                </div>
+
+                <div class="style-card" data-style="lujo">
+                    <div class="style-icon">💎</div>
+                    <h3>Lujo Premium</h3>
+                    <p>Materiales nobles, acabados de alta gama</p>
+                </div>
+
+                <div class="style-card" data-style="sostenible">
+                    <div class="style-icon">🌿</div>
+                    <h3>Sostenible Eco</h3>
+                    <p>Madera, piedra, plantas, eficiencia energética</p>
+                </div>
+
+                <div class="style-card" data-style="industrial">
+                    <div class="style-icon">🏭</div>
+                    <h3>Industrial</h3>
+                    <p>Hormigón, metal, espacios abiertos tipo loft</p>
+                </div>
+
+                <div class="style-card" data-style="rustico">
+                    <div class="style-icon">🪵</div>
+                    <h3>Rústico Ibicenco</h3>
+                    <p>Piedra, madera, estilo tradicional de Ibiza</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button onclick="backToUpload()" class="btn btn-secondary">← Volver</button>
+                <button onclick="generateVisualization()" class="btn btn-primary" id="btn-generate" disabled>
+                    Generar Visualización ✨
+                </button>
+            </div>
+        </section>
+
+        <!-- Paso 3: Resultados -->
+        <section id="results-section" class="section">
+            <h2>Tu visualización generada</h2>
+
+            <div class="comparison-container">
+                <div class="comparison-image">
+                    <h3>Imagen Original</h3>
+                    <img id="original-image" alt="Original">
+                </div>
+
+                <div class="comparison-arrow">→</div>
+
+                <div class="comparison-image">
+                    <h3>Visualización IA</h3>
+                    <div class="generated-container">
+                        <img id="generated-image" alt="Generado">
+                        <div class="style-badge" id="style-badge"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-info">
+                <h3>💡 Detalles de la visualización</h3>
+                <p id="result-description"></p>
+                <div class="result-tags" id="result-tags"></div>
+            </div>
+
+            <div class="actions">
+                <button onclick="downloadResult()" class="btn btn-secondary">📥 Descargar</button>
+                <button onclick="resetApp()" class="btn btn-primary">Crear nueva visualización</button>
+            </div>
+        </section>
+
+        <!-- Indicador de carga -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p id="loading-text">Generando visualización con IA...</p>
+            <p class="loading-subtext">Esto puede tardar 10-20 segundos</p>
+        </div>
+
+        <!-- Modal de configuración API (para producción) -->
+        <div id="api-modal" class="modal">
+            <div class="modal-content">
+                <h2>⚙️ Configuración de API</h2>
+                <p>Para usar la generación real de imágenes, necesitas una API key</p>
+                <div class="form-group">
+                    <label>Proveedor:</label>
+                    <select id="api-provider">
+                        <option value="demo">Modo Demo (sin API)</option>
+                        <option value="openai">OpenAI DALL-E</option>
+                        <option value="stability">Stability AI</option>
+                        <option value="replicate">Replicate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>API Key:</label>
+                    <input type="password" id="api-key" placeholder="sk-...">
+                </div>
+                <button onclick="saveApiConfig()" class="btn btn-primary">Guardar</button>
+                <button onclick="closeApiModal()" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/imageHandler.js"></script>
+    <script src="js/aiGenerator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
