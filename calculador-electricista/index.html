@@ -14,6 +14,58 @@
             <a href="../index.html" class="back-btn">← Volver al inicio</a>
         </header>
 
+        <!-- Selector de modo -->
+        <div id="mode-selector" class="mode-selector">
+            <button type="button" class="mode-btn active" data-mode="manual" onclick="switchMode('manual')">
+                📝 Formulario Manual
+            </button>
+            <button type="button" class="mode-btn" data-mode="ai" onclick="switchMode('ai')">
+                🤖 Asistente IA
+            </button>
+            <button type="button" class="mode-btn" data-mode="plan" onclick="switchMode('plan')">
+                📐 Analizar Plano
+            </button>
+        </div>
+
+        <!-- Modo Asistente IA -->
+        <section id="ai-mode" class="section" style="display: none;">
+            <h2>🤖 Asistente IA para Electricistas</h2>
+            <p class="subtitle">Describe tu instalación y te ayudaré a calcular el presupuesto</p>
+
+            <div class="ai-chat-container">
+                <div class="ai-messages" id="ai-messages">
+                    <div class="ai-message bot">
+                        <strong>Asistente:</strong> ¡Hola! Soy tu asistente para calcular instalaciones eléctricas.
+                        Describe el proyecto y te haré preguntas para obtener todos los datos necesarios según REBT.
+                        <br><br>Por ejemplo: "Necesito una instalación eléctrica para una vivienda nueva de 120m² con 3 habitaciones"
+                    </div>
+                </div>
+                <div class="ai-input-container">
+                    <textarea id="ai-input" placeholder="Describe tu proyecto eléctrico..." rows="3"></textarea>
+                    <button onclick="sendAIMessage()" class="btn btn-primary">Enviar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modo Análisis de Plano -->
+        <section id="plan-mode" class="section" style="display: none;">
+            <h2>📐 Análisis de Plano con IA</h2>
+            <p class="subtitle">Sube el plano de la instalación y la IA extraerá los datos automáticamente</p>
+
+            <div class="plan-upload-area">
+                <div class="upload-zone" id="plan-upload-zone">
+                    <div class="upload-icon">📤</div>
+                    <p>Arrastra el plano aquí o haz clic para seleccionar</p>
+                    <p class="upload-hint">Formatos: PDF, JPG, PNG (máx. 10MB)</p>
+                    <input type="file" id="plan-file" accept=".pdf,.jpg,.jpeg,.png" hidden>
+                </div>
+                <div id="plan-preview" style="display: none;">
+                    <img id="plan-image" alt="Plano">
+                    <button onclick="analyzePlan()" class="btn btn-primary">🔍 Analizar con IA</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Formulario del proyecto -->
         <section id="form-section" class="section active">
             <h2>Datos del Proyecto Eléctrico</h2>
@@ -25,7 +77,10 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="project-type">Tipo de instalación:</label>
+                            <label for="project-type">
+                                Tipo de instalación:
+                                <span class="tooltip-icon" data-tooltip="Determina los requisitos REBT aplicables. Vivienda nueva requiere todos los circuitos mínimos (ITC-BT-25). Reforma puede aprovechar instalación existente.">ℹ️</span>
+                            </label>
                             <select id="project-type" required>
                                 <option value="">Selecciona tipo</option>
                                 <option value="vivienda-nueva">Vivienda nueva</option>
@@ -36,14 +91,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="surface">Superficie (m²):</label>
+                            <label for="surface">
+                                Superficie (m²):
+                                <span class="tooltip-icon" data-tooltip="La superficie determina la electrificación mínima requerida. Hasta 160m² = básica (5.75kW), más de 160m² = elevada (9.2kW o superior).">ℹ️</span>
+                            </label>
                             <input type="number" id="surface" min="30" max="500" required placeholder="150">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="power">Potencia contratada deseada:</label>
+                            <label for="power">
+                                Potencia contratada deseada:
+                                <span class="tooltip-icon" data-tooltip="Determina el ICP (Interruptor de Control de Potencia) y el cable de acometida. Mayor potencia permite más aparatos simultáneos pero incrementa coste de factura. Mínimo legal: 5.75kW (básica), 9.2kW recomendado para viviendas >160m².">ℹ️</span>
+                            </label>
                             <select id="power" required>
                                 <option value="">Selecciona potencia</option>
                                 <option value="5.75">5,75 kW (Básica)</option>
@@ -54,7 +115,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="voltage">Tensión de suministro:</label>
+                            <label for="voltage">
+                                Tensión de suministro:
+                                <span class="tooltip-icon" data-tooltip="230V monofásica es estándar para viviendas. 400V trifásica se usa en locales comerciales, viviendas con climatización potente o cargas superiores a 15kW. Afecta al cálculo de intensidades y protecciones.">ℹ️</span>
+                            </label>
                             <select id="voltage" required>
                                 <option value="230">230V Monofásica</option>
                                 <option value="400">400V Trifásica</option>
@@ -69,24 +133,36 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="lighting-points">Puntos de luz:</label>
+                            <label for="lighting-points">
+                                Puntos de luz:
+                                <span class="tooltip-icon" data-tooltip="Determina el número de circuitos C1 (iluminación) necesarios. REBT: mínimo 1 circuito por cada 30 puntos de luz. Incluye focos, plafones, lámparas de techo y apliques. Afecta a la cantidad de cable 1.5mm² y magnetotérmicos 10A.">ℹ️</span>
+                            </label>
                             <input type="number" id="lighting-points" min="5" max="100" required placeholder="30">
                         </div>
 
                         <div class="form-group">
-                            <label for="socket-points">Tomas de corriente:</label>
+                            <label for="socket-points">
+                                Tomas de corriente:
+                                <span class="tooltip-icon" data-tooltip="Número de enchufes en toda la vivienda. REBT (ITC-BT-25): mínimo 1 circuito C2 por cada 20 tomas. Incluye enchufes en salones, dormitorios, pasillos. Requiere cable 2.5mm² y magnetotérmicos 16A. No incluye tomas de baño/cocina (circuito C5 separado).">ℹ️</span>
+                            </label>
                             <input type="number" id="socket-points" min="10" max="150" required placeholder="40">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="bathrooms">Baños:</label>
+                            <label for="bathrooms">
+                                Baños:
+                                <span class="tooltip-icon" data-tooltip="Número de cuartos de baño completos. Cada baño requiere circuito C5 independiente con tomas IP44 (protección contra salpicaduras) según ITC-BT-27. Determina número de diferenciales 30mA tipo A y tomas con obturador infantil.">ℹ️</span>
+                            </label>
                             <input type="number" id="bathrooms" min="1" max="10" required placeholder="2">
                         </div>
 
                         <div class="form-group">
-                            <label for="kitchen">Cocina eléctrica:</label>
+                            <label for="kitchen">
+                                Cocina eléctrica:
+                                <span class="tooltip-icon" data-tooltip="Tipo de placa de cocción. Determina circuito C3 (cocina/horno). Vitrocerámica: 6mm², 25A. Inducción: puede requerir 10mm², 32A si >7kW. Gas o sin cocina eléctrica seleccionar 'No'. Afecta significativamente a potencia total necesaria.">ℹ️</span>
+                            </label>
                             <select id="kitchen" required>
                                 <option value="no">No</option>
                                 <option value="vitro">Vitrocerámica</option>
@@ -101,18 +177,54 @@
                     <h3>⭐ Elementos Especiales</h3>
 
                     <div class="checkbox-grid">
-                        <label><input type="checkbox" name="special" value="aire"> Aire acondicionado</label>
-                        <label><input type="checkbox" name="special" value="calefaccion"> Calefacción eléctrica</label>
-                        <label><input type="checkbox" name="special" value="horno"> Horno eléctrico</label>
-                        <label><input type="checkbox" name="special" value="lavadora"> Lavadora</label>
-                        <label><input type="checkbox" name="special" value="secadora"> Secadora</label>
-                        <label><input type="checkbox" name="special" value="lavavajillas"> Lavavajillas</label>
-                        <label><input type="checkbox" name="special" value="termo"> Termo eléctrico</label>
-                        <label><input type="checkbox" name="special" value="piscina"> Bomba piscina</label>
-                        <label><input type="checkbox" name="special" value="ve"> Cargador vehículo eléctrico</label>
-                        <label><input type="checkbox" name="special" value="domotica"> Sistema domótico</label>
-                        <label><input type="checkbox" name="special" value="solar"> Paneles solares</label>
-                        <label><input type="checkbox" name="special" value="sai"> SAI/UPS</label>
+                        <label>
+                            <input type="checkbox" name="special" value="aire"> Aire acondicionado
+                            <span class="tooltip-icon" data-tooltip="Circuito C11 dedicado. Requiere cable 6mm² o superior según potencia, magnetotérmico 25A. Split >3kW necesita línea independiente desde cuadro. Incrementa potencia total +2-4kW.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="calefaccion"> Calefacción eléctrica
+                            <span class="tooltip-icon" data-tooltip="Circuitos adicionales según tipo (radiadores, suelo radiante). Requiere cable 4-6mm², 20-25A por circuito. Incrementa significativamente potencia necesaria (+5-10kW). Considerar trifásica si >10kW.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="horno"> Horno eléctrico
+                            <span class="tooltip-icon" data-tooltip="Incluido en circuito C3 si se comparte con cocina, o circuito independiente si potencia >3kW. Cable 4-6mm², magnetotérmico 20-25A. Hornos empotrables suelen requerir toma específica de 32A.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="lavadora"> Lavadora
+                            <span class="tooltip-icon" data-tooltip="Circuito C4 o C5 según ubicación. Cable 2.5mm², magnetotérmico 16A. Si está en baño requiere protección IP44 y diferencial 30mA tipo A. REBT obliga a toma individual accesible.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="secadora"> Secadora
+                            <span class="tooltip-icon" data-tooltip="Circuito C10 independiente. Cable 4mm², magnetotérmico 20A. Secadoras de condensación/bomba de calor consumen 2-3kW. Requiere toma Schuko 16A accesible para mantenimiento.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="lavavajillas"> Lavavajillas
+                            <span class="tooltip-icon" data-tooltip="Circuito C4 o C5 (cocina). Cable 2.5mm², magnetotérmico 16A. Consumo típico 2-2.5kW. Requiere toma accesible cerca del aparato con diferencial 30mA.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="termo"> Termo eléctrico
+                            <span class="tooltip-icon" data-tooltip="Circuito independiente. Cable 2.5-4mm² según potencia (50-80L: 2.5mm², >100L: 4mm²). Magnetotérmico 16-20A. Requiere toma específica con acceso para desconexión. Consumo 1.5-3kW.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="piscina"> Bomba piscina
+                            <span class="tooltip-icon" data-tooltip="Circuito exterior con protección IP65. Cable 2.5-4mm² según distancia y potencia, magnetotérmico 16-20A. Diferencial 30mA obligatorio. Si iluminación piscina: diferencial específico 10mA (ITC-BT-31).">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="ve"> Cargador vehículo eléctrico
+                            <span class="tooltip-icon" data-tooltip="Circuito C12 dedicado según ITC-BT-52. Wallbox 7kW monofásico: cable 10mm², 32A. Wallbox 11kW trifásico: cable 6mm² (4x). Requiere diferencial 30mA tipo B o A-B. Incrementa potencia mínima a 11.5-15kW.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="domotica"> Sistema domótico
+                            <span class="tooltip-icon" data-tooltip="Circuito adicional de control. Cable bus KNX o similar. Requiere cuadro de distribución con espacio para actuadores. Incluye fuente alimentación 24V, módulos de control. Incrementa coste en automatismos y programación.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="solar"> Paneles solares
+                            <span class="tooltip-icon" data-tooltip="Instalación fotovoltaica con vertido o autoconsumo. Requiere línea DC desde paneles, inversor, protecciones DC (fusibles, descargadores), contador bidireccional. Cuadro independiente. Normativa específica: ITC-BT-40, RD 244/2019.">ℹ️</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="special" value="sai"> SAI/UPS
+                            <span class="tooltip-icon" data-tooltip="Sistema de alimentación ininterrumpida. Circuito dedicado para cargas críticas (servidor, domótica, alarma). Cable 2.5-4mm² según potencia. Requiere toma específica y puesta a tierra de calidad. Típico 1-3kVA.">ℹ️</span>
+                        </label>
                     </div>
                 </div>
 
@@ -121,7 +233,10 @@
                     <h3>💎 Calidad de Materiales</h3>
 
                     <div class="form-group">
-                        <label for="quality">Nivel de acabados:</label>
+                        <label for="quality">
+                            Nivel de acabados:
+                            <span class="tooltip-icon" data-tooltip="Determina la gama de materiales y mecanismos. Básica: cumple normativa, económica. Media: +30-40% sobre básica, marcas reconocidas, mejor estética. Alta: +80-100%, diseño premium, domótica integrable, acabados exclusivos (cristal, acero).">ℹ️</span>
+                        </label>
                         <select id="quality" required>
                             <option value="">Selecciona calidad</option>
                             <option value="basica">Básica - Materiales estándar homologados</option>
@@ -131,7 +246,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="brand-preference">Preferencia de marca:</label>
+                        <label for="brand-preference">
+                            Preferencia de marca:
+                            <span class="tooltip-icon" data-tooltip="Marca principal para mecanismos y protecciones. Mixta optimiza coste/calidad combinando marcas. Schneider/ABB: referencia industrial, fiabilidad máxima. Simon: diseño español, buen precio. Legrand: gama completa, compatibilidad KNX. Afecta precio final 10-25%.">ℹ️</span>
+                        </label>
                         <select id="brand-preference">
                             <option value="mixta">Mixta (optimizar coste/calidad)</option>
                             <option value="schneider">Schneider Electric</option>
@@ -148,24 +266,36 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="company-name">Empresa:</label>
+                            <label for="company-name">
+                                Empresa:
+                                <span class="tooltip-icon" data-tooltip="Nombre comercial o razón social que aparecerá en el presupuesto. Debe coincidir con la empresa autorizada en el boletín eléctrico. Aparecerá en todas las páginas del documento generado.">ℹ️</span>
+                            </label>
                             <input type="text" id="company-name" required placeholder="Tu Empresa Eléctrica SL">
                         </div>
 
                         <div class="form-group">
-                            <label for="license-number">Nº Autorización REBT:</label>
+                            <label for="license-number">
+                                Nº Autorización REBT:
+                                <span class="tooltip-icon" data-tooltip="Número de registro como instalador autorizado ante el organismo competente de Baleares. Formato BA-XXXXXX. Obligatorio para emitir boletín eléctrico. Se incluirá en el presupuesto para dar confianza al cliente.">ℹ️</span>
+                            </label>
                             <input type="text" id="license-number" placeholder="BA-001234">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="hourly-rate">Tarifa horaria (€/h):</label>
+                            <label for="hourly-rate">
+                                Tarifa horaria (€/h):
+                                <span class="tooltip-icon" data-tooltip="Coste por hora de trabajo del oficial electricista. Incluye mano de obra directa. En Ibiza: 40-50€/h (estándar), 50-65€/h (especializado). No incluye desplazamientos ni gestiones (se calculan aparte). Afecta directamente al coste final de instalación.">ℹ️</span>
+                            </label>
                             <input type="number" id="hourly-rate" min="20" max="100" required placeholder="45">
                         </div>
 
                         <div class="form-group">
-                            <label for="markup">Margen materiales (%):</label>
+                            <label for="markup">
+                                Margen materiales (%):
+                                <span class="tooltip-icon" data-tooltip="Porcentaje de beneficio sobre PVP de materiales. Cubre gestión, transporte, almacenaje, garantías. Habitual en sector: 15-25%. Ibiza suele aplicar 20-30% por sobrecostes logísticos. Se suma al precio de compra antes de presentar al cliente.">ℹ️</span>
+                            </label>
                             <input type="number" id="markup" min="0" max="50" required placeholder="20">
                         </div>
                     </div>

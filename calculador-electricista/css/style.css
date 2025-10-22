@@ -147,6 +147,81 @@ header p {
     cursor: pointer;
 }
 
+/* Tooltips */
+.tooltip-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    background: #17a2b8;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75em;
+    cursor: help;
+    margin-left: 5px;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.3s;
+}
+
+.tooltip-icon:hover {
+    background: #138496;
+}
+
+.tooltip-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: normal;
+    line-height: 1.4;
+    width: 320px;
+    max-width: 90vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    text-align: left;
+}
+
+.tooltip-icon::before {
+    content: '';
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #2c3e50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1001;
+}
+
+.tooltip-icon:hover::after,
+.tooltip-icon:hover::before {
+    opacity: 1;
+}
+
+/* Adjust tooltip position for checkboxes */
+.checkbox-grid .tooltip-icon {
+    margin-left: auto;
+}
+
+.checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 /* Buttons */
 .btn {
     padding: 15px 30px;
@@ -414,6 +489,162 @@ header p {
     color: rgba(255,255,255,0.7);
     font-size: 0.9em !important;
     margin-top: 10px !important;
+}
+
+/* Mode selector */
+.mode-selector {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    background: white;
+    color: #333;
+    border: 2px solid #e0e0e0;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mode-btn:hover {
+    border-color: #f39c12;
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #f39c12, #e74c3c);
+    color: white;
+    border-color: #e74c3c;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+/* AI Chat Mode */
+.ai-chat-container {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.ai-messages {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 400px;
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 2px solid #e0e0e0;
+}
+
+.ai-message {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.ai-message.bot {
+    background: #e8f4f8;
+    border-left: 4px solid #17a2b8;
+}
+
+.ai-message.user {
+    background: #fff5e6;
+    border-left: 4px solid #f39c12;
+    text-align: right;
+}
+
+.ai-input-container {
+    display: flex;
+    gap: 15px;
+}
+
+.ai-input-container textarea {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.ai-input-container textarea:focus {
+    outline: none;
+    border-color: #f39c12;
+}
+
+.ai-input-container .btn {
+    width: auto;
+    align-self: flex-end;
+}
+
+/* Plan Upload Mode */
+.plan-upload-area {
+    margin-top: 20px;
+}
+
+.upload-zone {
+    background: #f8f9fa;
+    border: 3px dashed #ccc;
+    border-radius: 15px;
+    padding: 60px 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-zone:hover {
+    border-color: #f39c12;
+    background: #fff5e6;
+}
+
+.upload-zone.dragover {
+    border-color: #e74c3c;
+    background: #ffe6e6;
+}
+
+.upload-icon {
+    font-size: 4em;
+    margin-bottom: 15px;
+}
+
+.upload-zone p {
+    color: #666;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.upload-hint {
+    font-size: 0.9em !important;
+    color: #999 !important;
+}
+
+#plan-preview {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#plan-preview img {
+    max-width: 100%;
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 20px;
 }
 
 /* Responsive */

@@ -5,6 +5,7 @@ let currentCalculos = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeForm();
+    initializePlanUpload();
 });
 
 function initializeForm() {
@@ -175,6 +176,177 @@ function quickDemo() {
     setTimeout(() => handleFormSubmit(), 1000);
 }
 
+// Mode switching
+function switchMode(mode) {
+    // Update buttons
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.mode === mode) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Hide all sections
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('ai-mode').style.display = 'none';
+    document.getElementById('plan-mode').style.display = 'none';
+
+    // Show selected section
+    if (mode === 'manual') {
+        document.getElementById('form-section').style.display = 'block';
+    } else if (mode === 'ai') {
+        document.getElementById('ai-mode').style.display = 'block';
+    } else if (mode === 'plan') {
+        document.getElementById('plan-mode').style.display = 'block';
+    }
+}
+
+// Plan upload initialization
+function initializePlanUpload() {
+    const uploadZone = document.getElementById('plan-upload-zone');
+    const fileInput = document.getElementById('plan-file');
+
+    // Click to upload
+    uploadZone.addEventListener('click', () => fileInput.click());
+
+    // Drag and drop
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file) handlePlanFile(file);
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handlePlanFile(file);
+    });
+}
+
+function handlePlanFile(file) {
+    // Validate file
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
+        alert('Formato no válido. Usa JPG, PNG o PDF.');
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert('Archivo muy grande. Máximo 10MB.');
+        return;
+    }
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = document.getElementById('plan-image');
+        img.src = e.target.result;
+        document.getElementById('plan-upload-zone').style.display = 'none';
+        document.getElementById('plan-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function analyzePlan() {
+    showLoading();
+
+    // Simulate AI analysis (2-4 seconds)
+    const analysisTexts = [
+        'Analizando plano con visión IA...',
+        'Detectando cuadro eléctrico...',
+        'Contando puntos de luz...',
+        'Identificando tomas de corriente...',
+        'Extrayendo dimensiones...',
+        'Generando datos del formulario...'
+    ];
+
+    let index = 0;
+    const interval = setInterval(() => {
+        document.getElementById('loading-text').textContent = analysisTexts[index];
+        index = (index + 1) % analysisTexts.length;
+    }, 1500);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        hideLoading();
+
+        // Simulate extracted data
+        alert('✅ Análisis completado\n\n🔍 Datos extraídos del plano:\n\n• Superficie: ~120 m²\n• Puntos de luz: 28\n• Tomas de corriente: 36\n• Baños detectados: 2\n• Cocina eléctrica: Sí\n\nCambiando a formulario manual con datos pre-rellenados...');
+
+        // Switch to manual mode with pre-filled data
+        switchMode('manual');
+        document.getElementById('surface').value = '120';
+        document.getElementById('lighting-points').value = '28';
+        document.getElementById('socket-points').value = '36';
+        document.getElementById('bathrooms').value = '2';
+        document.getElementById('kitchen').value = 'vitro';
+
+        window.scrollTo({ top: document.getElementById('form-section').offsetTop - 100, behavior: 'smooth' });
+    }, 6000);
+}
+
+// AI Assistant message sending
+function sendAIMessage() {
+    const input = document.getElementById('ai-input');
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    // Add user message
+    const messagesDiv = document.getElementById('ai-messages');
+    messagesDiv.innerHTML += `
+        <div class="ai-message user">
+            <strong>Tú:</strong> ${message}
+        </div>
+    `;
+
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    // Simulate AI response (this would use real AI in production)
+    setTimeout(() => {
+        const response = generateAIResponse(message);
+        messagesDiv.innerHTML += `
+            <div class="ai-message bot">
+                <strong>Asistente:</strong> ${response}
+            </div>
+        `;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 1500);
+}
+
+function generateAIResponse(userMessage) {
+    // Simple keyword-based responses for demo
+    const msg = userMessage.toLowerCase();
+
+    if (msg.includes('vivienda') || msg.includes('casa') || msg.includes('piso')) {
+        return '¿Cuántos metros cuadrados tiene la vivienda? ¿Es una instalación nueva o una reforma?';
+    } else if (msg.includes('m²') || msg.includes('metros')) {
+        return 'Perfecto. ¿Cuántos puntos de luz y tomas de corriente necesitas? También dime si tiene cocina eléctrica.';
+    } else if (msg.includes('local') || msg.includes('comercial') || msg.includes('negocio')) {
+        return '¿Qué tipo de negocio es? ¿Necesitas instalación trifásica? ¿Cuál es la superficie aproximada?';
+    } else if (msg.includes('luz') || msg.includes('enchufe') || msg.includes('toma')) {
+        return 'Entendido. ¿La instalación incluye aire acondicionado, cargador de vehículo eléctrico u otros elementos especiales?';
+    } else {
+        return 'Entiendo. Necesito algunos datos más: superficie en m², número de baños, si tiene cocina eléctrica y si necesitas elementos especiales como aire acondicionado o cargador de VE.';
+    }
+}
+
+// Make functions global
+window.switchMode = switchMode;
+window.analyzePlan = analyzePlan;
+window.sendAIMessage = sendAIMessage;
 window.quickDemo = quickDemo;
+
 console.log('%c⚡ Calculador Electricista - Gecko Studio', 'font-size: 20px; font-weight: bold; color: #e74c3c;');
 console.log('%cPrueba rápida: quickDemo()', 'color: #999;');
