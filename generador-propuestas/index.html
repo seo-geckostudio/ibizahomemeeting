@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Propuestas - Gecko Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 Generador de Propuestas Comerciales</h1>
+            <p>Crea propuestas profesionales personalizadas en minutos</p>
+            <a href="../index.html" class="back-btn">← Volver al inicio</a>
+        </header>
+
+        <!-- Formulario de datos -->
+        <section id="form-section" class="section active">
+            <h2>Datos de la propuesta</h2>
+            <p class="subtitle">Completa la información para generar tu propuesta personalizada</p>
+
+            <form id="proposal-form">
+                <!-- Tipo de propuesta -->
+                <div class="form-group">
+                    <label for="proposal-type">Tipo de propuesta:</label>
+                    <select id="proposal-type" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="construccion">Construcción / Obra nueva</option>
+                        <option value="reforma">Reforma integral</option>
+                        <option value="diseno">Diseño de interiores</option>
+                        <option value="arquitectura">Servicios de arquitectura</option>
+                        <option value="ingenieria">Ingeniería y consultoria</option>
+                        <option value="materiales">Suministro de materiales</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <!-- Datos del cliente -->
+                    <div class="form-group">
+                        <label for="client-name">Nombre del cliente:</label>
+                        <input type="text" id="client-name" required placeholder="Ej: María García">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client-company">Empresa (opcional):</label>
+                        <input type="text" id="client-company" placeholder="Ej: Inmobiliaria Costa Ibiza">
+                    </div>
+                </div>
+
+                <!-- Datos del proyecto -->
+                <div class="form-group">
+                    <label for="project-name">Nombre del proyecto:</label>
+                    <input type="text" id="project-name" required placeholder="Ej: Villa moderna en San José">
+                </div>
+
+                <div class="form-group">
+                    <label for="project-description">Descripción breve del proyecto:</label>
+                    <textarea id="project-description" rows="3" required placeholder="Describe el proyecto, necesidades del cliente, ubicación, etc."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-location">Ubicación:</label>
+                        <select id="project-location" required>
+                            <option value="">Selecciona ubicación</option>
+                            <option value="Ibiza ciudad">Ibiza ciudad</option>
+                            <option value="Santa Eulalia">Santa Eulalia</option>
+                            <option value="San Antonio">San Antonio</option>
+                            <option value="San José">San José</option>
+                            <option value="San Juan">San Juan</option>
+                            <option value="Formentera">Formentera</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget-range">Rango presupuestario:</label>
+                        <select id="budget-range" required>
+                            <option value="">Selecciona rango</option>
+                            <option value="Hasta 50.000€">Hasta 50.000€</option>
+                            <option value="50.000€ - 100.000€">50.000€ - 100.000€</option>
+                            <option value="100.000€ - 250.000€">100.000€ - 250.000€</option>
+                            <option value="250.000€ - 500.000€">250.000€ - 500.000€</option>
+                            <option value="Más de 500.000€">Más de 500.000€</option>
+                            <option value="A consultar">A consultar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Servicios incluidos -->
+                <div class="form-group">
+                    <label>Servicios incluidos en la propuesta:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="service" value="proyecto" checked> Proyecto técnico</label>
+                        <label><input type="checkbox" name="service" value="direccion"> Dirección de obra</label>
+                        <label><input type="checkbox" name="service" value="gestion"> Gestión de permisos</label>
+                        <label><input type="checkbox" name="service" value="coordinacion"> Coordinación</label>
+                        <label><input type="checkbox" name="service" value="materiales"> Materiales</label>
+                        <label><input type="checkbox" name="service" value="mano-obra"> Mano de obra</label>
+                        <label><input type="checkbox" name="service" value="diseno"> Diseño personalizado</label>
+                        <label><input type="checkbox" name="service" value="seguimiento"> Seguimiento post-obra</label>
+                    </div>
+                </div>
+
+                <!-- Datos de tu empresa -->
+                <h3 class="section-title">Tus datos de empresa</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company-name">Nombre de tu empresa:</label>
+                        <input type="text" id="company-name" required placeholder="Ej: Gecko Studio">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-person">Persona de contacto:</label>
+                        <input type="text" id="contact-person" required placeholder="Tu nombre">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact-email">Email:</label>
+                        <input type="email" id="contact-email" required placeholder="contacto@tuempresa.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-phone">Teléfono:</label>
+                        <input type="tel" id="contact-phone" required placeholder="+34 600 000 000">
+                    </div>
+                </div>
+
+                <!-- Notas adicionales -->
+                <div class="form-group">
+                    <label for="additional-notes">Notas adicionales (opcional):</label>
+                    <textarea id="additional-notes" rows="2" placeholder="Información extra que quieras incluir..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Generar Propuesta ✨</button>
+            </form>
+        </section>
+
+        <!-- Preview de la propuesta -->
+        <section id="preview-section" class="section">
+            <div class="preview-header">
+                <h2>Vista previa de tu propuesta</h2>
+                <div class="preview-actions">
+                    <button onclick="editProposal()" class="btn btn-secondary">✏️ Editar datos</button>
+                    <button onclick="downloadProposal()" class="btn btn-primary">📥 Descargar PDF</button>
+                </div>
+            </div>
+
+            <div class="document-preview" id="document-preview">
+                <!-- El contenido se generará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p id="loading-text">Generando propuesta con IA...</p>
+            <p class="loading-subtext">Creando contenido personalizado</p>
+        </div>
+    </div>
+
+    <script src="js/templates.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
