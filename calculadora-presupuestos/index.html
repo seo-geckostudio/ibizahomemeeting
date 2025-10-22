@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Presupuestos IA - Gecko Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Calculadora de Presupuestos con IA</h1>
+            <p>Estimación inteligente de costes y tiempos para tu proyecto</p>
+            <a href="../index.html" class="back-btn">← Volver al inicio</a>
+        </header>
+
+        <!-- Formulario de proyecto -->
+        <section id="form-section" class="section active">
+            <h2>Datos del proyecto</h2>
+            <p class="subtitle">Cuéntanos sobre tu proyecto para calcular el presupuesto</p>
+
+            <form id="budget-form">
+                <!-- Tipo de proyecto -->
+                <div class="form-group">
+                    <label for="project-type">Tipo de proyecto:</label>
+                    <select id="project-type" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="obra-nueva">Obra nueva completa</option>
+                        <option value="reforma-integral">Reforma integral</option>
+                        <option value="reforma-parcial">Reforma parcial</option>
+                        <option value="ampliacion">Ampliación</option>
+                        <option value="rehabilitacion">Rehabilitación</option>
+                        <option value="piscina">Construcción de piscina</option>
+                        <option value="jardin">Diseño de jardín</option>
+                    </select>
+                </div>
+
+                <!-- Tipo de inmueble -->
+                <div class="form-group">
+                    <label for="property-type">Tipo de inmueble:</label>
+                    <select id="property-type" required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="villa">Villa / Casa</option>
+                        <option value="apartamento">Apartamento</option>
+                        <option value="local">Local comercial</option>
+                        <option value="oficina">Oficina</option>
+                        <option value="terreno">Terreno (construcción nueva)</option>
+                    </select>
+                </div>
+
+                <!-- Superficie -->
+                <div class="form-group">
+                    <label for="surface">Superficie (m²):</label>
+                    <input type="number" id="surface" min="20" max="2000" required placeholder="Ej: 150">
+                    <span class="hint">Entre 20 y 2000 m²</span>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="form-group">
+                    <label for="location">Ubicación en Ibiza:</label>
+                    <select id="location" required>
+                        <option value="">Selecciona una zona</option>
+                        <option value="ibiza-ciudad">Ibiza ciudad</option>
+                        <option value="santa-eulalia">Santa Eulalia</option>
+                        <option value="san-antonio">San Antonio</option>
+                        <option value="san-jose">San José</option>
+                        <option value="norte">Norte de Ibiza</option>
+                        <option value="interior">Interior</option>
+                    </select>
+                </div>
+
+                <!-- Calidad de acabados -->
+                <div class="form-group">
+                    <label for="quality">Calidad de acabados:</label>
+                    <select id="quality" required>
+                        <option value="">Selecciona calidad</option>
+                        <option value="basica">Básica - Materiales estándar</option>
+                        <option value="media">Media - Buena calidad</option>
+                        <option value="alta">Alta - Materiales premium</option>
+                        <option value="lujo">Lujo - Materiales exclusivos</option>
+                    </select>
+                </div>
+
+                <!-- Características especiales -->
+                <div class="form-group">
+                    <label>Características especiales (opcionales):</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="feature" value="piscina"> Piscina</label>
+                        <label><input type="checkbox" name="feature" value="jardin"> Jardín diseñado</label>
+                        <label><input type="checkbox" name="feature" value="domotica"> Domótica</label>
+                        <label><input type="checkbox" name="feature" value="solar"> Paneles solares</label>
+                        <label><input type="checkbox" name="feature" value="climatizacion"> Climatización premium</label>
+                        <label><input type="checkbox" name="feature" value="cocina-lujo"> Cocina de lujo</label>
+                        <label><input type="checkbox" name="feature" value="banos-extra"> Baños extra</label>
+                        <label><input type="checkbox" name="feature" value="garaje"> Garaje/Aparcamiento</label>
+                    </div>
+                </div>
+
+                <!-- Estado actual (para reformas) -->
+                <div class="form-group" id="current-state-group" style="display: none;">
+                    <label for="current-state">Estado actual:</label>
+                    <select id="current-state">
+                        <option value="bueno">Bueno - Requiere actualizaciones</option>
+                        <option value="regular">Regular - Necesita trabajo</option>
+                        <option value="malo">Malo - Requiere rehabilitación</option>
+                    </select>
+                </div>
+
+                <!-- Descripción adicional -->
+                <div class="form-group">
+                    <label for="description">Descripción adicional (opcional):</label>
+                    <textarea id="description" rows="3" placeholder="Detalles específicos del proyecto que quieras mencionar..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Calcular Presupuesto 🧮</button>
+            </form>
+        </section>
+
+        <!-- Resultados -->
+        <section id="results-section" class="section">
+            <h2>Presupuesto estimado para tu proyecto</h2>
+
+            <!-- Resumen principal -->
+            <div class="budget-summary">
+                <div class="total-cost">
+                    <span class="label">Coste Total Estimado</span>
+                    <span class="amount" id="total-cost">0€</span>
+                    <span class="range" id="cost-range">Rango: 0€ - 0€</span>
+                </div>
+
+                <div class="summary-details">
+                    <div class="detail-item">
+                        <span class="detail-label">📏 Superficie</span>
+                        <span class="detail-value" id="summary-surface">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">💶 Coste por m²</span>
+                        <span class="detail-value" id="cost-per-sqm">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">⏱️ Tiempo estimado</span>
+                        <span class="detail-value" id="timeline">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desglose por categorías -->
+            <div class="breakdown-container">
+                <h3>📊 Desglose detallado</h3>
+                <div id="breakdown-list"></div>
+            </div>
+
+            <!-- Fases del proyecto -->
+            <div class="phases-container">
+                <h3>📅 Fases del proyecto</h3>
+                <div id="phases-list"></div>
+            </div>
+
+            <!-- Notas importantes -->
+            <div class="notes-container">
+                <h3>⚠️ Información importante</h3>
+                <ul class="notes-list">
+                    <li>Este presupuesto es orientativo y se basa en precios medios del mercado en Ibiza</li>
+                    <li>Los costes pueden variar según proveedores, temporada y disponibilidad de materiales</li>
+                    <li>No incluye permisos y licencias municipales (pueden añadir 3-8% adicional)</li>
+                    <li>Recomendamos solicitar presupuestos detallados a varios profesionales</li>
+                    <li>Los precios en Ibiza suelen ser 15-25% superiores a península por logística insular</li>
+                </ul>
+            </div>
+
+            <!-- Acciones -->
+            <div class="actions">
+                <button onclick="downloadPDF()" class="btn btn-secondary">📥 Descargar PDF</button>
+                <button onclick="resetCalculator()" class="btn btn-primary">Nueva Estimación</button>
+            </div>
+        </section>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p id="loading-text">Analizando proyecto con IA...</p>
+            <p class="loading-subtext">Calculando costes y materiales</p>
+        </div>
+    </div>
+
+    <script src="js/pricing.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
